@@ -9,35 +9,29 @@ void setup() {
    Serial.begin(9600);
 }
 
+void set_light(int led){
+    
+    int rouge = random(15, 256);
+    int vert = random(15, 256);
+    int bleu = random(15, 256);
+
+    rouge= (rouge * rouge) / 255; // Augmente les valeurs
+    vert = (vert * vert) / 255;
+    bleu = (bleu * bleu) / 255;
+
+    strip.setPixelColor(led, strip.Color(rouge, vert, bleu));
+    strip.show();
+    delay(100);
+}
+
 void loop() {
 
   for (int i =0;i < 15;i++){
-
-    int rouge = random(15, 256);
-    int vert = random(15, 256);
-    int bleu = random(15, 256);
-
-    rouge = (rouge * rouge) / 255; // Augmente les valeurs
-    vert = (vert * vert) / 255;
-    bleu = (bleu * bleu) / 255;
-
-    strip.setPixelColor(i, strip.Color(rouge, vert, bleu));
-    strip.show();
-    delay(100);
+    set_light(i);
   }
-    for (int i =14;i > 0;i--){
-
-    int rouge = random(15, 256);
-    int vert = random(15, 256);
-    int bleu = random(15, 256);
     
-    rouge = (rouge * rouge) / 255; // Augmente les valeurs
-    vert = (vert * vert) / 255;
-    bleu = (bleu * bleu) / 255;
-    
-    strip.setPixelColor(i, strip.Color(rouge, vert, bleu));
-    strip.show();
-    delay(100);
+  for (int i =14;i > 0;i--){
+    set_light(i);
   }
 
 }
