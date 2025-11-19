@@ -2,10 +2,12 @@
 
 #include "Adafruit_NeoPixel.h"
 #define PIN  13
-#define NUMPIXELS 144+15
+#define D0 12
+#define micro A0
+#define NUMPIXELS 15
 Adafruit_NeoPixel strip (NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-
-int power=80;
+int val_mic =0;
+int power=255;
 
 void setup() {
    strip.begin();
@@ -13,33 +15,28 @@ void setup() {
    Serial.begin(9600);
 }
 
-void set_light(int led){
+void set_colors(int red,int green, int bleu){
     
-    int rouge = random(15, power);
-    int vert = random(15, power);
-    int bleu = random(15, power);
-
-    rouge= (rouge * rouge) / power; // Augmente les valeurs
-    vert = (vert * vert) / power;
-    bleu = (bleu * bleu) / power;
-
-    strip.setPixelColor(led, strip.Color(rouge, vert, bleu));
-    strip.show();
-    delay(50);
+  for (int i =0;i < NUMPIXELS;i++){
+    strip.setPixelColor(i, strip.Color(red, green, bleu));
+    
+  }
+strip.show();
+    
 }
 
 void loop() {
 
-  for (int i =0;i < NUMPIXELS;i++){
-    set_light(i);
-  }
+ 
+ set_colors(0,255,0);
+ delay(50);
 
-  strip.fill(0,0,0);
-
-  for (int i =NUMPIXELS-1;i > 0;i--){
-    set_light(i);
-  }
-
-  strip.fill(0,0,0);
+val_mic= analogRead(micro);
+Serial.println(val_mic);
+if (val_mic >= 525){
+    Serial.println(val_mic);
+    set_colors(255,0,0);
+    delay(1000);
+}
 
 }
