@@ -1,15 +1,17 @@
-/*Balayage multicolors*/
+/*Balayage k200*/
+
+/*
+strip.setPixelColor(led, strip.Color(255, 0, 0));
+    strip.show();
+*/
 
 #include "Adafruit_NeoPixel.h"
-#define PIN  13
-#define D0 12
-#define micro A0
-#define NUMPIXELS 15
-unsigned long time=0;
-String last_couleur;
+#define PIN 13
+#define NUMPIXELS 144
 Adafruit_NeoPixel strip (NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-int val_mic =0;
-int power=255;
+int power =100; 
+int qlenght = 20;
+int qstep = power/qlenght;
 
 void setup() {
    strip.begin();
@@ -17,56 +19,21 @@ void setup() {
    Serial.begin(9600);
 }
 
-void set_colors(int red,int green, int bleu,String couleur){
-    if (millis() >= time+1000 && couleur != last_couleur){
-        time=millis();
-        last_couleur=couleur;
-        Serial.print(val_mic);
-        Serial.println(" "+couleur);
-        for (int i =0;i < NUMPIXELS;i++){
-            strip.setPixelColor(i, strip.Color(red, green, bleu));
-        }
-    strip.show();
-    }
 
-
-    
-}
 
 void loop() {
 
-
- delay(50);
-
-val_mic= analogRead(micro);
-//Serial.println(val_mic);
-
-
-
-
-
-if (val_mic >= 540){
-
-    set_colors(255,0,0,"red");//rouge
-
-}
-else if (val_mic >= 530){
-
-    set_colors(255,165,0,"orange");//orange
-
-}
-else if (val_mic >= 520){
-
-    set_colors(255,255,0,"yel");//jaune
-
-}
-else if (val_mic >= 510){
-
-    set_colors(0,255,0,"green");//green
-}
-if (val_mic <= 500){
-
-    set_colors(0,128,0,"lite green");//petit green
-}
+  for (int led =21;led < NUMPIXELS;led++){
+    for (int q =20 ;q > 0;q--){
+      strip.setPixelColor(led-q, strip.Color(0, 0, power-int(q*qstep)));
+    }
+    strip.show();
+    delay(10);
+    strip.clear();
+  }
+    
+  for (int i =NUMPIXELS-1;i > 0;i--){
+    
+  }
 
 }
